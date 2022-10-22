@@ -21,7 +21,7 @@ function LoginForm(props){
         //     }),
         // })
         //     .then((r)=>r.json())
-        //     .then(onLogin);
+        //     .then((user)=>onLogin(user));
     };
 
     return(
