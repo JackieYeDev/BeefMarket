@@ -5,6 +5,15 @@ import CartItem from "./CartItem";
 function Cart(props) {
   function handleSubmit(e) {
     e.preventDefault();
+    // fetch("/order", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({}),
+    // })
+    //   .then((r) => r.json())
+    //   .then(() => console.log("Order Submitted"));
   }
   return (
     <Form onSubmit={handleSubmit}>
