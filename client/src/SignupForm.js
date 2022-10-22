@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, Checkbox, Form} from "semantic-ui-react";
 
-function SignupForm() {
+function SignupForm(props) {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -12,6 +12,20 @@ function SignupForm() {
     function handleSubmit(e){
         e.preventDefault()
         console.log(formData)
+        // fetch("/signup",{
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //         username: formData.username,
+        //         password: formData.password,
+        //         password_confirmation: formData.passwordConfirmation,
+        //         premium_user: formData.premiumUser,
+        //     }),
+        // })
+        //     .then((r) => r.json())
+        //     .then(onLogin);
     }
 
     return(
