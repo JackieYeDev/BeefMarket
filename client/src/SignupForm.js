@@ -1,11 +1,12 @@
 import React, {useState} from "react";
-import {Button, Form} from "semantic-ui-react";
+import {Button, Checkbox, Form} from "semantic-ui-react";
 
 function SignupForm() {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
         passwordConfirmation: "",
+        premiumUser: "false",
     })
 
     function handleSubmit(e){
@@ -40,6 +41,12 @@ function SignupForm() {
                     value={formData.passwordConfirmation}
                     onChange={(e)=>{setFormData({...formData, passwordConfirmation: e.target.value})}}
                 />
+            </Form.Field>
+            <Form.Field>
+                <Checkbox
+                    label={"Would you like to pay $4.99/month for premium meats and discounts?"}
+                    onChange={(event,data)=>{setFormData({...formData, premiumUser: data.checked})}}
+                ></Checkbox>
             </Form.Field>
             <Button type={"submit"}>Register</Button>
         </Form>
