@@ -7,7 +7,17 @@ function MenuBar(props) {
   return (
     <Segment inverted>
       <Menu inverted secondary>
-        <Menu.Item header>Beef Market</Menu.Item>
+        <Menu.Item
+          header
+          name={"Home"}
+          active={activeItem === "Home"}
+          onClick={() => setActiveItem("Home")}
+          as={NavLink}
+          exact
+          to={"/"}
+        >
+          Beef Market
+        </Menu.Item>
         {!props.user && (
           <>
             <Menu.Item
