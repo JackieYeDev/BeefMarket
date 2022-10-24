@@ -34,12 +34,12 @@ function LoginForm(props) {
     })
       .then((r) => r.json())
       .then((response) => {
-        if (response.status === 200) {
+        if (response.error) {
+          setError([response.error]);
+        } else {
           setError([]);
           setUser(response);
           history.push("/");
-        } else {
-          setError([response.error]);
         }
       })
       .catch((err) => console.error(err));
