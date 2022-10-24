@@ -54,9 +54,13 @@ function Inventory(props) {
                   </Card.Meta>
                 </Card.Content>
                 <Card.Content extra>
-                  <Button type={"submit"} onClick={() => addToCart(i)}>
-                    Add to cart
-                  </Button>
+                  {i.stock <= 0 ? (
+                    <Button disabled={true}>Out of Stock!</Button>
+                  ) : (
+                    <Button type={"submit"} onClick={() => addToCart(i)}>
+                      Add to cart
+                    </Button>
+                  )}
                 </Card.Content>
               </Card>
             ))}
