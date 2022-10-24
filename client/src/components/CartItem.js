@@ -4,7 +4,7 @@ import { Button, Icon, Item } from "semantic-ui-react";
 function CartItem(props) {
   return (
     <Item>
-      <Item.Image src={props.item.imageURL} />
+      <Item.Image src={props.item.image_url} />
       <Item.Content>
         <Item.Header>{props.item.name}</Item.Header>
         <Item.Meta>
@@ -26,7 +26,7 @@ function CartItem(props) {
             floated="right"
             onClick={() => props.removeFromCart(props.item.id)}
           >
-            <Icon name="delete" />
+            <Icon name="delete" /> Remove From Cart
           </Button>
         </Item.Extra>
       </Item.Content>

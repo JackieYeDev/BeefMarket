@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Icon, Menu, Segment } from "semantic-ui-react";
 import { NavLink } from "react-router-dom";
+import { CartContext } from "../context/cart";
 
 function MenuBar(props) {
   const [activeItem, setActiveItem] = useState("");
+  const [cartData] = useContext(CartContext);
   return (
     <Segment inverted>
       <Menu inverted secondary>
@@ -84,7 +86,8 @@ function MenuBar(props) {
               exact
               to={"/cart"}
             >
-              <Icon name="cart" /> View Cart
+              <Icon name="cart" />{" "}
+              {cartData.length === 0 ? "" : cartData.length} - View Cart
             </Menu.Item>
             <Menu.Item
               name={"Logout"}
