@@ -1,12 +1,22 @@
-import React, { useState } from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
+import React, { useContext, useState } from "react";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment,
+} from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/user";
 
 function LoginForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [, setUser] = useContext(UserContext);
+  const [error, setError] = useState([]);
 
   let history = useHistory();
 
@@ -24,39 +34,52 @@ function LoginForm(props) {
     })
       .then((r) => r.json())
       .then((response) => {
-        history.push("/");
+        if (response.status === 200) {
+          setError([]);
+          setUser(response);
+          history.push("/");
+        } else {
+          setError([response.error]);
+        }
       })
       .catch((err) => console.error(err));
-    // .then((user) => onLogin(user));
   }
 
   return (
-    <Segment>
-      <Form onSubmit={handleSubmit}>
-        <Form.Field>
-          <label>Username (Your email you signed up with):</label>
-          <input
-            placeholder={"Please enter your username."}
-            value={formData.username}
-            onChange={(e) => {
-              setFormData({ ...formData, username: e.target.value });
-            }}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Password:</label>
-          <input
-            type={"password"}
-            placeholder={"Please enter your password."}
-            value={formData.password}
-            onChange={(e) => {
-              setFormData({ ...formData, password: e.target.value });
-            }}
-          />
-        </Form.Field>
-        <Button type={"submit"}>Login</Button>
-      </Form>
-    </Segment>
+    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as="h2" color="red" textAlign="center">
+          Login to your account
+        </Header>
+        <Segment>
+          <Form onSubmit={handleSubmit}>
+            <Form.Field>
+              <label>Username (Your email you signed up with):</label>
+              <input
+                placeholder={"Please enter your username."}
+                value={formData.username}
+                onChange={(e) => {
+                  setFormData({ ...formData, username: e.target.value });
+                }}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>Password:</label>
+              <input
+                type={"password"}
+                placeholder={"Please enter your password."}
+                value={formData.password}
+                onChange={(e) => {
+                  setFormData({ ...formData, password: e.target.value });
+                }}
+              />
+            </Form.Field>
+            <Button type={"submit"}>Login</Button>
+            {error.length > 0 && <Message>{error}</Message>}
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
   );
 }
 
