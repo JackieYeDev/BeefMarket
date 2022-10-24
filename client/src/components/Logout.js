@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Container, Segment } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { UserContext } from "../context/user";
 
 function Logout() {
@@ -18,11 +18,9 @@ function Logout() {
     });
   }, []);
   return (
-    <Segment>
-      <Container text>
-        <p>Logging out!</p>
-      </Container>
-    </Segment>
+    <Container text>
+      <p>Logging out! Redirecting in 5 seconds ... </p>
+    </Container>
   );
 }
 
