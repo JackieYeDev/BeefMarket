@@ -37,7 +37,7 @@ function SignupForm(props) {
         password_confirmation: formData.passwordConfirmation,
       }),
     }).then((r) => {
-      if (r.status === 201) {
+      if (r.ok) {
         setUser(r.json());
         history.push("/");
       } else {
