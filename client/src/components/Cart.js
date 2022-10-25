@@ -13,43 +13,21 @@ function Cart(props) {
     });
     setCartData(updatedCart);
   }
-
-  // useEffect(() => {
-  //   setCartData([
-  //     {
-  //       id: 1,
-  //       name: "Striploin",
-  //       price: "49.99",
-  //       quantity: 2,
-  //       imageURL: "https://react.semantic-ui.com/images/wireframe/image.png",
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Flank Steak",
-  //       price: "29.99",
-  //       quantity: 2,
-  //       imageURL: "https://react.semantic-ui.com/images/wireframe/image.png",
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "NY Strip (Wagyu)",
-  //       price: "399.99",
-  //       quantity: 3,
-  //       imageURL: "https://react.semantic-ui.com/images/wireframe/image.png",
-  //     },
-  //   ]);
-  // }, []);
   function handleSubmit(e) {
     e.preventDefault();
-    // fetch("/order", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({}),
-    // })
-    //   .then((r) => r.json())
-    //   .then(() => console.log("Order Submitted"));
+    fetch("/order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_array: cartData,
+      }),
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        setCartData([]);
+      });
   }
   return (
     <Form onSubmit={handleSubmit}>
@@ -79,7 +57,7 @@ function Cart(props) {
                   Total:{" $"}
                   {cartData.length > 0
                     ? cartData.reduce((a, b) => a + b.price * b.quantity, 0.0)
-                    : `$ 0`}
+                    : "0"}
                 </span>
               </Item.Content>
             </Item>
