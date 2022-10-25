@@ -11,6 +11,7 @@ import Logout from "./Logout";
 import { UserContext } from "../context/user";
 import Home from "./Home";
 import { CartContext } from "../context/cart";
+import Order from "./Order";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -51,7 +52,7 @@ function App() {
     {
       name: "orders",
       path: "/orders",
-      component: null,
+      component: Order,
     },
     {
       name: "cart",

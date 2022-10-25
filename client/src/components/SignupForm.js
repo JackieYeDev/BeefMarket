@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -10,6 +10,7 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/user";
 
 function SignupForm(props) {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ function SignupForm(props) {
   });
 
   const [errors, setErrors] = useState([]);
+  const [, setUser] = useContext(UserContext);
 
   let history = useHistory();
 
@@ -34,14 +36,14 @@ function SignupForm(props) {
         password: formData.password,
         password_confirmation: formData.passwordConfirmation,
       }),
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        if (response.status === 200) {
-          setErrors([]);
-          history.push("/");
-        } else setErrors(response.errors);
-      });
+    }).then((r) => {
+      if (r.ok) {
+        setUser(r.json());
+        history.push("/");
+      } else {
+        r.json().then((response) => setErrors(response.errors));
+      }
+    });
   }
 
   return (
