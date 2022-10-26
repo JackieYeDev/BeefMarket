@@ -21,12 +21,9 @@
   },
   "scripts": {
     "start": "PORT=4000 react-scripts start",
-    "build": "npm install --prefix client && npm run build --prefix client",
-    "clean": "rm -rf public",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "cp -a client/build/. public/",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run clean && npm run build && npm run deploy"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

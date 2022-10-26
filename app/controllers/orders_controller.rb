@@ -10,10 +10,12 @@ class OrdersController < ApplicationController
   end
   def create
     user = User.find_by(id: session[:user_id])
+    # If User is in Session, begin create! Order
     if user
-      order = Order.create!(user_id: user.id, order_total: params[:order_total])
+      # Get order details from array of items
       order_array = params[:order_array]
-      order_array.map do |details|
+      order = Order.create!(user_id: user.id, order_total: params[:order_total])
+      order_array.each do |details|
         order.order_details.create!(inventory_id: details["id"], product_name: details["name"], price: details["price"], quantity: details["quantity"])
         inventory = Inventory.find(details["id"])
         updated_stock = inventory.stock - details["quantity"]
