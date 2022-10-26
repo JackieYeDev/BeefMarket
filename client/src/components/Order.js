@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, Item, Segment } from "semantic-ui-react";
+import {
+  Accordion,
+  Container,
+  Grid,
+  Icon,
+  Item,
+  Segment,
+} from "semantic-ui-react";
 
 function Order() {
   const [orders, setOrders] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
   useEffect(() => {
     fetch("/order", {
       method: "GET",
@@ -16,6 +24,17 @@ function Order() {
         setOrders([...response]);
       });
   }, []);
+  function convertDateToString(date) {
+    const stringDate = new Date(date);
+    const fullDate =
+      stringDate.getMonth() +
+      1 +
+      "-" +
+      stringDate.getDate() +
+      "-" +
+      stringDate.getFullYear();
+    return fullDate;
+  }
   return (
     <>
       {orders.length > 0 && (
@@ -25,35 +44,39 @@ function Order() {
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            {orders.map((order) => (
-              <Segment>
-                <Item>
-                  <Item.Content>
-                    <p>
-                      <Item.Header>
-                        <b>Order Date: {order.created_at.slice(0, 10)}</b>
-                      </Item.Header>
-                      <Item.Meta>
-                        <span>Order ID#{order.id}</span>
-                      </Item.Meta>
-                    </p>
-                    {order.order_details.map((detail) => (
-                      <p>
-                        <Item.Meta>{detail.product_name}</Item.Meta>
+            <Accordion styled>
+              {orders.map((order, i) => (
+                <div key={i}>
+                  <Accordion.Title
+                    active={activeIndex === i}
+                    index={i}
+                    onClick={() => {
+                      const newIndex = activeIndex === i ? -1 : i;
+                      setActiveIndex(newIndex);
+                    }}
+                  >
+                    <Icon name="dropdown" />
+                    Order ID#{order.id} --- Order Date:{" "}
+                    {convertDateToString(order.created_at)}
+                  </Accordion.Title>
+                  <Accordion.Content active={activeIndex === i}>
+                    {order.order_details.map((detail, a) => (
+                      <Item key={a}>
+                        <Item.Header>{detail.product_name}</Item.Header>
                         <Item.Meta>Quantity: {detail.quantity}</Item.Meta>
                         <Item.Meta>${detail.price} / unit</Item.Meta>
-                        <Item.Meta>
+                        <Item.Content>
                           Total: $ {detail.quantity * detail.price}
-                        </Item.Meta>
-                      </p>
+                        </Item.Content>
+                      </Item>
                     ))}
                     <p>
                       <Item.Meta>Order Total: $ {order.order_total}</Item.Meta>
                     </p>
-                  </Item.Content>
-                </Item>
-              </Segment>
-            ))}
+                  </Accordion.Content>
+                </div>
+              ))}
+            </Accordion>
           </Grid.Column>
         </Grid>
       )}

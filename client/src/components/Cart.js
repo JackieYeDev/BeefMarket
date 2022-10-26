@@ -1,10 +1,18 @@
-import React, { useContext, useEffect } from "react";
-import { Button, Form, Grid, Item, ItemGroup } from "semantic-ui-react";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Form,
+  Grid,
+  Item,
+  ItemGroup,
+  Message,
+} from "semantic-ui-react";
 import CartItem from "./CartItem";
 import { CartContext } from "../context/cart";
 
 function Cart(props) {
   const [cartData, setCartData] = useContext(CartContext);
+  const [message, setMessage] = useState("");
   function onRemoveFromCart(objID) {
     const updatedCart = cartData.filter((item) => {
       if (objID !== item.id) {
@@ -13,6 +21,9 @@ function Cart(props) {
     });
     setCartData(updatedCart);
   }
+  useEffect(() => {
+    setMessage("");
+  }, []);
   const cartTotal = () =>
     cartData.length > 0
       ? cartData.reduce((a, b) => a + b.price * b.quantity, 0.0)
@@ -28,11 +39,14 @@ function Cart(props) {
         order_total: cartTotal(),
         order_array: cartData,
       }),
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        setCartData([]);
-      });
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((response) => {
+          setMessage("Your order has been successfully submitted!");
+          setCartData([]);
+        });
+      }
+    });
   }
   return (
     <Form onSubmit={handleSubmit}>
@@ -63,6 +77,7 @@ function Cart(props) {
             </Item>
           </ItemGroup>
           <Button type={"submit"}>Submit Order!</Button>
+          {message !== "" ? <Message positive>{message}</Message> : null}
         </Grid.Column>
       </Grid>
     </Form>
