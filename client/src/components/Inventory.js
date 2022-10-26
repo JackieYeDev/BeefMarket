@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { CartContext } from "../context/cart";
 
 function Inventory(props) {
+  // TODO: Add function to decrease inventory stock every time you Add To Cart
   const [inventory, setInventory] = useState([]);
   const [cartData, setCartData] = useContext(CartContext);
   let history = useHistory();
@@ -16,7 +17,7 @@ function Inventory(props) {
     })
       .then((r) => r.json())
       .then((response) => {
-        if (response.status === 500) {
+        if (response.status === 500 || response.status === 401) {
           history.push("/login");
         } else {
           setInventory(response);
@@ -51,6 +52,11 @@ function Inventory(props) {
                   <Card.Header>{i.name}</Card.Header>
                   <Card.Meta>
                     <span className={"description"}>${i.price}/unit</span>
+                  </Card.Meta>
+                  <Card.Meta>
+                    <span className={"description"}>
+                      Remaining in Stock: {i.stock}
+                    </span>
                   </Card.Meta>
                 </Card.Content>
                 <Card.Content extra>

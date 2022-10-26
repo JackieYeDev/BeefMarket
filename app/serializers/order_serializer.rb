@@ -1,4 +1,4 @@
 class OrderSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :order_total, :created_at
   has_many :order_details
 end

@@ -13,6 +13,10 @@ function Cart(props) {
     });
     setCartData(updatedCart);
   }
+  const cartTotal = () =>
+    cartData.length > 0
+      ? cartData.reduce((a, b) => a + b.price * b.quantity, 0.0)
+      : 0;
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/order", {
@@ -21,6 +25,7 @@ function Cart(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        order_total: cartTotal(),
         order_array: cartData,
       }),
     })
@@ -53,12 +58,7 @@ function Cart(props) {
             )}
             <Item>
               <Item.Content>
-                <span>
-                  Total:{" $"}
-                  {cartData.length > 0
-                    ? cartData.reduce((a, b) => a + b.price * b.quantity, 0.0)
-                    : "0"}
-                </span>
+                <span>Total: ${cartTotal()}</span>
               </Item.Content>
             </Item>
           </ItemGroup>
