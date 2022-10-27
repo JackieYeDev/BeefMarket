@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :cart_items
   resources :inventories
   resources :users
   # Routing logic: fallback requests for React Router.

@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  Container,
-  Grid,
-  Icon,
-  Item,
-  Segment,
-} from "semantic-ui-react";
+import { Accordion, Grid, Icon, Item } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
 
 function Order() {
   const [orders, setOrders] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
+  let history = useHistory();
+
   useEffect(() => {
     fetch("/order", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        console.log(response);
-        setOrders([...response]);
-      });
+    }).then((r) => {
+      if (r.status === 401) {
+        history.push("/login");
+      } else {
+        r.json().then((response) => {
+          console.log(response);
+          setOrders([...response]);
+        });
+      }
+    });
   }, []);
   function convertDateToString(date) {
     const stringDate = new Date(date);
@@ -70,9 +70,7 @@ function Order() {
                         </Item.Content>
                       </Item>
                     ))}
-                    <p>
-                      <Item.Meta>Order Total: $ {order.order_total}</Item.Meta>
-                    </p>
+                    <p>Order Total: $ {order.order_total}</p>
                   </Accordion.Content>
                 </div>
               ))}

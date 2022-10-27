@@ -23,7 +23,7 @@ class OrdersController < ApplicationController
       end
       render json: order, status: :created
     else
-      render json: { error: "Unprocessable Entity" }, status: :unprocessable_entity
+      render json: { error: "Unauthorized" }, status: :unauthorized
     end
   end
 
