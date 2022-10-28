@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Card, Grid, Image } from "semantic-ui-react";
+import { Button, Card, Grid, Image, Message } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { CartContext } from "../context/cart";
+import { UserContext } from "../context/user";
 
 function Inventory(props) {
   // TODO: Add function to decrease inventory stock every time you Add To Cart
   const [inventory, setInventory] = useState([]);
   const [cartData, setCartData] = useContext(CartContext);
+  const [user] = useContext(UserContext);
   let history = useHistory();
   useEffect(() => {
     fetch("/inventories", {
@@ -20,25 +22,27 @@ function Inventory(props) {
         if (response.status === 500 || response.status === 401) {
           history.push("/login");
         } else {
+          // console.log(response);
           setInventory(response);
         }
       });
   }, []);
 
   function addToCart(data) {
-    data = { ...data, quantity: 1 };
-    if (cartData.find((c) => c.id === data.id)) {
-      const newCartData = cartData.map((c) => {
-        if (c.id === data.id) {
-          return { ...c, quantity: c.quantity + 1 };
-        } else {
-          return c;
-        }
-      });
-      setCartData(newCartData);
-    } else {
-      setCartData([...cartData, data]);
-    }
+    fetch("/cart_items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart_id: user.cart.id,
+        inventory_id: data.id,
+      }),
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((response) => console.log(response));
+      }
+    });
   }
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">

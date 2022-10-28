@@ -87,7 +87,8 @@ function MenuBar(props) {
               to={"/cart"}
             >
               <Icon name="cart" />{" "}
-              {cartData.length === 0 ? "" : cartData.length} - View Cart
+              {cartData.length === 0 ? "" : cartData.cart_items.length} - View
+              Cart
             </Menu.Item>
             <Menu.Item
               name={"Logout"}

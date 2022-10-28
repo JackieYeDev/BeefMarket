@@ -9,6 +9,7 @@ import {
 } from "semantic-ui-react";
 import CartItem from "./CartItem";
 import { CartContext } from "../context/cart";
+import { UserContext } from "../context/user";
 
 function Cart(props) {
   const [cartData, setCartData] = useContext(CartContext);
@@ -24,10 +25,19 @@ function Cart(props) {
   useEffect(() => {
     setMessage("");
   }, []);
-  const cartTotal = () =>
-    cartData.length > 0
-      ? cartData.reduce((a, b) => a + b.price * b.quantity, 0.0)
-      : 0;
+  useEffect(() => {
+    fetch("/cart", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((r) => r.json())
+      .then((response) => {
+        console.log(response);
+        setCartData({ ...response });
+      });
+  }, []);
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/order", {
@@ -36,7 +46,6 @@ function Cart(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        order_total: cartTotal(),
         order_array: cartData,
       }),
     }).then((r) => {
@@ -57,12 +66,13 @@ function Cart(props) {
       >
         <Grid.Column style={{ maxWidth: 750 }}>
           <ItemGroup>
-            {cartData.length > 0 ? (
-              cartData.map((item) => {
+            {cartData.cart_items ? (
+              cartData.cart_items.map((item) => {
                 return (
                   <CartItem
                     key={item.id}
-                    item={item}
+                    item={item.inventory}
+                    quantity={item.quantity}
                     removeFromCart={onRemoveFromCart}
                   />
                 );
@@ -72,11 +82,16 @@ function Cart(props) {
             )}
             <Item>
               <Item.Content>
-                <span>Total: ${cartTotal()}</span>
+                <span>Total: ${cartData.total_price}</span>
               </Item.Content>
             </Item>
           </ItemGroup>
-          <Button type={"submit"}>Submit Order!</Button>
+          <Button type={"submit"} color={"green"}>
+            Submit Order!
+          </Button>
+          <Button type={"submit"} color={"red"}>
+            Empty Cart
+          </Button>
           {message !== "" ? <Message positive>{message}</Message> : null}
         </Grid.Column>
       </Grid>

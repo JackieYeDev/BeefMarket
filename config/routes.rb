@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   resources :cart_items
   resources :inventories
   resources :users
@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
   get "/me", to: "users#show"
   get "/order", to: "orders#show"
+  get "/cart", to: "carts#show"
+  get "/cart_item", to: "cart_items#show"
   post "/login", to: "sessions#create"
   post "/signup", to: "users#create"
   post "/order", to: "orders#create"

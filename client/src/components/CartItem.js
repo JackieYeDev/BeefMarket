@@ -11,13 +11,11 @@ function CartItem(props) {
           <span className={"price"}>$ {props.item.price}/unit</span>
         </Item.Meta>
         <Item.Meta>
-          <span className={"quantity"}>
-            Quantity: {props.item.quantity} Unit(s)
-          </span>
+          <span className={"quantity"}>Quantity: {props.quantity} Unit(s)</span>
         </Item.Meta>
         <Item.Meta>
           <span className={"total"}>
-            Total: $ {props.item.quantity * props.item.price}
+            Total: $ {props.quantity * props.item.price}
           </span>
         </Item.Meta>
         <Item.Extra>
