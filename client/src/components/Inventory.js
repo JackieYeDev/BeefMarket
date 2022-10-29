@@ -7,10 +7,15 @@ import { UserContext } from "../context/user";
 function Inventory(props) {
   // TODO: Add function to decrease inventory stock every time you Add To Cart
   const [inventory, setInventory] = useState([]);
-  const [cartData, setCartData] = useContext(CartContext);
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   let history = useHistory();
   useEffect(() => {
+    fetch("/cart", { method: "GET" })
+      .then((r) => r.json())
+      .then((response) => {
+        // Makes sure that when order was submitted, the new cart_id will be present in the user.
+        setUser({ ...user, cart: response });
+      });
     fetch("/inventories", {
       method: "GET",
       headers: {
@@ -40,7 +45,14 @@ function Inventory(props) {
       }),
     }).then((r) => {
       if (r.ok) {
-        r.json().then((response) => console.log(response));
+        r.json().then(() => {
+          // Updates frontend of inventory to show decrease in stock to avoid refetching.
+          const updatedData = { ...data, stock: data.stock - 1 };
+          const updatedInventory = inventory.map((i) =>
+            i.id === updatedData.id ? updatedData : i
+          );
+          setInventory(updatedInventory);
+        });
       }
     });
   }

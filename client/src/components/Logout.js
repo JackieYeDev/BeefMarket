@@ -13,8 +13,8 @@ function Logout() {
       method: "DELETE",
     }).then(async () => {
       await sleep(5000);
-      history.push("/");
       setUser(null);
+      history.push("/");
     });
   }, []);
   return (

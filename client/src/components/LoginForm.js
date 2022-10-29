@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -15,7 +15,7 @@ function LoginForm(props) {
     username: "",
     password: "",
   });
-  const [, setUser] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const [error, setError] = useState([]);
 
   let history = useHistory();

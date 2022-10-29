@@ -15,12 +15,38 @@ function Cart(props) {
   const [cartData, setCartData] = useContext(CartContext);
   const [message, setMessage] = useState("");
   function onRemoveFromCart(objID) {
-    const updatedCart = cartData.filter((item) => {
-      if (objID !== item.id) {
-        return item;
-      }
+    fetch("/cart_items", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart_item_id: objID }),
+    }).then(() => {
+      const newCartData = cartData.cart_items.filter(
+        (item) => item.id !== objID
+      );
+      const oldItem = cartData.cart_items.find(
+        (element) => element.id === objID
+      );
+      const newTotalPrice =
+        cartData.total_price - oldItem.quantity * oldItem.inventory.price;
+      setCartData({
+        ...cartData,
+        cart_items: newCartData,
+        total_price: newTotalPrice,
+      });
     });
-    setCartData(updatedCart);
+  }
+  function onEmptyCart(e) {
+    e.preventDefault();
+    fetch("/cart", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      setCartData([]);
+    });
   }
   useEffect(() => {
     setMessage("");
@@ -34,7 +60,6 @@ function Cart(props) {
     })
       .then((r) => r.json())
       .then((response) => {
-        console.log(response);
         setCartData({ ...response });
       });
   }, []);
@@ -46,7 +71,7 @@ function Cart(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        order_array: cartData,
+        order_total: cartData.total_price,
       }),
     }).then((r) => {
       if (r.ok) {
@@ -54,11 +79,13 @@ function Cart(props) {
           setMessage("Your order has been successfully submitted!");
           setCartData([]);
         });
+      } else {
+        console.log(cartData);
       }
     });
   }
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <Grid
         textAlign="center"
         style={{ height: "100vh" }}
@@ -66,30 +93,33 @@ function Cart(props) {
       >
         <Grid.Column style={{ maxWidth: 750 }}>
           <ItemGroup>
-            {cartData.cart_items ? (
-              cartData.cart_items.map((item) => {
-                return (
-                  <CartItem
-                    key={item.id}
-                    item={item.inventory}
-                    quantity={item.quantity}
-                    removeFromCart={onRemoveFromCart}
-                  />
-                );
-              })
-            ) : (
-              <span>Your cart is empty!</span>
-            )}
+            {cartData.cart_items
+              ? cartData.cart_items.map((item) => {
+                  return (
+                    <CartItem
+                      key={item.id}
+                      item={item.inventory}
+                      quantity={item.quantity}
+                      cartItemId={item.id}
+                      removeFromCart={onRemoveFromCart}
+                    />
+                  );
+                })
+              : null}
             <Item>
               <Item.Content>
                 <span>Total: ${cartData.total_price}</span>
               </Item.Content>
             </Item>
           </ItemGroup>
-          <Button type={"submit"} color={"green"}>
+          <Button
+            type={"submit"}
+            color={"green"}
+            onClick={(e) => handleSubmit(e)}
+          >
             Submit Order!
           </Button>
-          <Button type={"submit"} color={"red"}>
+          <Button type={"submit"} color={"red"} onClick={(e) => onEmptyCart(e)}>
             Empty Cart
           </Button>
           {message !== "" ? <Message positive>{message}</Message> : null}

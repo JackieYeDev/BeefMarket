@@ -20,7 +20,10 @@ class CartItemsController < ApplicationController
     end
   end
   def destroy
-    cart_item = CartItem.find(params[:cart_item_id])
+    cart_item = CartItem.find_by(id: params[:cart_item_id])
+    inventory_item = Inventory.find(cart_item.inventory_id)
+    new_stock = inventory_item.stock + cart_item.quantity
+    inventory_item.update(:stock => new_stock)
     cart_item.destroy
     head :no_content
   end

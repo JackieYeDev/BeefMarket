@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :carts
   resources :cart_items
   resources :inventories
   resources :users
@@ -13,5 +14,7 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   post "/signup", to: "users#create"
   post "/order", to: "orders#create"
+  delete "/cart", to: "carts#destroy"
   delete "/logout", to: "sessions#destroy"
+  delete "/cart_items", to: "cart_items#destroy"
 end

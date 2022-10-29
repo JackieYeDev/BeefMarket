@@ -22,7 +22,7 @@ function CartItem(props) {
           <Button
             primary
             floated="right"
-            onClick={() => props.removeFromCart(props.item.id)}
+            onClick={() => props.removeFromCart(props.cartItemId)}
           >
             <Icon name="delete" /> Remove From Cart
           </Button>
