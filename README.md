@@ -1,13 +1,24 @@
 # Flatiron School - FLEX SE - Phase 4 - Project - BeefMarket
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 This project is to fulfill the requirements for Phase 4 of the Flatiron School - Flex SE program.
+This project is created with a React Frontend and Rails Backend, and is setup to be deployed to Heroku for hosting.
+You can view the complete application hosted on Heroku with this link: [Link to Heroku App]
+
+[Link to Heroku App]:http://beef-market.herokuapp.com/
+
 ## Description
 
 BeefMarket is a one stop shop website where you can signup for free to purchase premium cut beef at a fair cost.
+In this website you will be able to:
+- Sign up for an account
+- Login to view BeefMarket's inventory
+- Add items from the inventory to your cart
+- Submit your cart for an order
 
-This project is scaffolded so that you can build a React frontend and Rails
-backend together, and easily deploy them to Heroku.
+## DB Design
+
+The following is a diagram of the DB Structure used for the BeefMarket App.
+![BeefMarket DB Diagram](BeefMarket-DB-Diagram.png)
 
 ## Requirements
 
@@ -22,33 +33,18 @@ When you're ready to start building your project, run:
 
 ```sh
 bundle install
-rails db:create
+rails db:create db:migrate db:seed
 npm install --prefix client
 ```
 
 You can use the following commands to run the application:
 
 - `rails s`: run the backend on [http://localhost:3000](http://localhost:3000)
-- `npm start --prefix client`: run the frontend on
-  [http://localhost:4000](http://localhost:4000)
-
-Make sure to also update this README to include documentation about
-your project. Here's a list of some [awesome readmes][] for inspiration.
-
-[awesome readmes]: https://github.com/matiassingers/awesome-readme
+- `npm start --prefix client`: run the frontend on [http://localhost:4000](http://localhost:4000)
 
 ## Deploying
 
-This application has all the starter code needed to help you deploy your
-application to Heroku. It's recommended to deploy your project early and push up
-changes often to ensure that your code works equally well in production and
-development environments.
-
-If you've already set up your environment to deploy to Heroku, you can run the
-commands below to deploy your application. If not, make sure to check out the
-Environment Setup section below.
-
-To deploy, first log in to your Heroku account using the Heroku CLI:
+To deploy to Heroku, first log in to your Heroku account using the Heroku CLI:
 
 ```sh
 heroku login
@@ -250,45 +246,5 @@ service:
 brew services start postgresql
 ```
 
-## Troubleshooting
 
-If you ran into any errors along the way, here are some things you can try to
-troubleshoot:
 
-- If you're on a Mac and got a server connection error when you tried to run
-  `rails db:create`, one option for solving this problem for Mac users is to
-  install the Postgres app. To do this, first uninstall `postgresql` by running
-  `brew remove postgresql`. Next, download the app from the
-  [Postgres downloads page][postgres downloads page] and install it. Launch the
-  app and click "Initialize" to create a new server. You should now be able to
-  run `rails db:create`.
-
-- If you're using WSL and got the following error running `rails db:create`:
-
-  ```txt
-  PG::ConnectionBad: FATAL:  role "yourusername" does not exist
-  ```
-
-  The issue is that you did not create a role in Postgres for the default user
-  account. Check [this video](https://www.youtube.com/watch?v=bQC5izDzOgE) for
-  one possible fix.
-
-- If your app failed to deploy at the build stage, make sure your local
-  environment is set up correctly by following the steps at the beginning of
-  this lesson. Check that you have the latest versions of Ruby and Bundler, and
-  ensure that Postgresql was installed successfully.
-
-- If you deployed successfully, but you ran into issues when you visited the
-  site, make sure you migrated and seeded the database. Also, make sure that
-  your application works locally and try to debug any issues on your local
-  machine before re-deploying. You can also check the logs on the server by
-  running `heroku logs`.
-
-For additional support, check out these guides on Heroku:
-
-- [Deploying a Rails 6 App to Heroku][heroku rails deploying guide]
-- [Rails Troubleshooting on Heroku][troubleshooting guide on heroku]
-
-[postgres downloads page]: https://postgresapp.com/downloads.html
-[heroku rails deploying guide]: https://devcenter.heroku.com/articles/getting-started-with-rails6
-[troubleshooting guide on heroku]: https://devcenter.heroku.com/articles/getting-started-with-rails6#troubleshooting
