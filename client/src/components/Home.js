@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Container, Grid, Segment } from "semantic-ui-react";
 import Cart from "./Cart";
 import Inventory from "./Inventory";
@@ -9,7 +9,7 @@ function Home(props) {
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="top">
-      {!user && (
+      {user == null && (
         <Grid.Column style={{ maxWidth: 500 }}>
           <Segment raised>
             <p>Welcome to Beef Market!</p>{" "}

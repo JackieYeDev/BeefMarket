@@ -16,11 +16,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if session[:user_id] != nil
-      session.delete [:user_id, :cart_id]
-      head :no_content
-    else
-      render json: { error: "Unauthorized" }, status: :unauthorized
-    end
+    session.delete :user_id
+    session.delete :cart_id
+    head :no_content
   end
 end

@@ -12,14 +12,14 @@ function Logout() {
     fetch("/logout", {
       method: "DELETE",
     }).then(async () => {
-      await sleep(5000);
       setUser(null);
+      await sleep(3000);
       history.push("/");
     });
   }, []);
   return (
     <Container text>
-      <p>Logging out! Redirecting in 5 seconds ... </p>
+      <p>Logging out! Redirecting in 3 seconds ... </p>
     </Container>
   );
 }
