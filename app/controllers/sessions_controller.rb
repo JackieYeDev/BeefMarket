@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
     user = User.find_by(username: params[:username])
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
+      session[:admin] = user.admin
       if user.cart
         session[:cart_id] = user.cart.id
       else
@@ -18,6 +19,7 @@ class SessionsController < ApplicationController
   def destroy
     session.delete :user_id
     session.delete :cart_id
+    session.delete :admin
     head :no_content
   end
 end

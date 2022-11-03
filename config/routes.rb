@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   post "/signup", to: "users#create"
   post "/order", to: "orders#create"
+  post "/inventory", to: "inventories#create"
   delete "/cart", to: "carts#destroy"
   delete "/logout", to: "sessions#destroy"
   delete "/cart_items", to: "cart_items#destroy"

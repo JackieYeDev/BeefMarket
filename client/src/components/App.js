@@ -1,17 +1,16 @@
 import "../App.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import Cart from "./Cart";
 import Inventory from "./Inventory";
 import MenuBar from "./MenuBar";
-import { Container, Segment } from "semantic-ui-react";
 import { Route, Switch } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import Logout from "./Logout";
 import { UserContext } from "../context/user";
 import Home from "./Home";
-import { CartContext } from "../context/cart";
 import Order from "./Order";
+import NewInventory from "./NewInventory";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -51,6 +50,11 @@ function App() {
       name: "inventory",
       path: "/inventory",
       component: Inventory,
+    },
+    {
+      name: "newInventory",
+      path: "/newinventory",
+      component: NewInventory,
     },
     {
       name: "orders",
