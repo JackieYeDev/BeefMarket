@@ -11,6 +11,7 @@ import { UserContext } from "../context/user";
 import Home from "./Home";
 import Order from "./Order";
 import NewInventory from "./NewInventory";
+import DeleteInventory from "./DeleteInventory";
 
 function App() {
   const [user, setUser] = useContext(UserContext);
@@ -55,6 +56,11 @@ function App() {
       name: "newInventory",
       path: "/newinventory",
       component: NewInventory,
+    },
+    {
+      name: "deleteInventory",
+      path: "/deleteinventory",
+      component: DeleteInventory,
     },
     {
       name: "orders",

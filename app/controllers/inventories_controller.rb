@@ -14,7 +14,7 @@ class InventoriesController < ApplicationController
   end
 
   def destroy
-    inventory = Inventory.find(params[:inventory_id])
+    inventory = Inventory.find(params[:id])
     inventory.destroy
     head :no_content
   end

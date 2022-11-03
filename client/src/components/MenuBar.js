@@ -64,18 +64,32 @@ function MenuBar(props) {
               Inventory
             </Menu.Item>
             {props.user.admin === true && (
-              <Menu.Item
-                name={"NewInventory"}
-                active={activeItem === "NewInventory"}
-                onClick={() => {
-                  setActiveItem("NewInventory");
-                }}
-                as={NavLink}
-                exact
-                to={"/newinventory"}
-              >
-                New Inventory
-              </Menu.Item>
+              <>
+                <Menu.Item
+                  name={"NewInventory"}
+                  active={activeItem === "NewInventory"}
+                  onClick={() => {
+                    setActiveItem("NewInventory");
+                  }}
+                  as={NavLink}
+                  exact
+                  to={"/newinventory"}
+                >
+                  New Inventory
+                </Menu.Item>
+                <Menu.Item
+                  name={"DeleteInventory"}
+                  active={activeItem === "DeleteInventory"}
+                  onClick={() => {
+                    setActiveItem("DeleteInventory");
+                  }}
+                  as={NavLink}
+                  exact
+                  to={"/deleteinventory"}
+                >
+                  Delete Inventory
+                </Menu.Item>
+              </>
             )}
             <Menu.Item
               position={"right"}
