@@ -17,6 +17,7 @@ function SignupForm(props) {
     username: "",
     password: "",
     passwordConfirmation: "",
+    admin: false,
   });
 
   const [errors, setErrors] = useState([]);
@@ -35,6 +36,7 @@ function SignupForm(props) {
         username: formData.username,
         password: formData.password,
         password_confirmation: formData.passwordConfirmation,
+        admin: formData.admin,
       }),
     }).then((r) => {
       if (r.ok) {
@@ -44,6 +46,10 @@ function SignupForm(props) {
         r.json().then((response) => setErrors(response.errors));
       }
     });
+  }
+
+  function updateFormData(e) {
+    setFormData({ ...formData, [`${e.target.name}`]: `${e.target.value}` });
   }
 
   return (
@@ -59,39 +65,42 @@ function SignupForm(props) {
                 Username (Your email address will be your username):
               </label>
               <input
+                name={"username"}
                 placeholder={"Please enter an email address!"}
                 value={formData.username}
-                onChange={(e) => {
-                  setFormData({ ...formData, username: e.target.value });
-                }}
+                onChange={(e) => updateFormData(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Password: </label>
               <input
+                name={"password"}
                 type={"password"}
                 placeholder={
                   "Please enter a password with at least 6 characters!"
                 }
                 value={formData.password}
-                onChange={(e) => {
-                  setFormData({ ...formData, password: e.target.value });
-                }}
+                onChange={(e) => updateFormData(e)}
               />
             </Form.Field>
             <Form.Field>
               <label>Confirm Password: </label>
               <input
+                name={"passwordConfirmation"}
                 type={"password"}
                 placeholder={"Please enter the same password again!"}
                 value={formData.passwordConfirmation}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    passwordConfirmation: e.target.value,
-                  });
-                }}
+                onChange={(e) => updateFormData(e)}
               />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                label={"Admin priveleges?"}
+                checked={formData.admin}
+                onClick={() =>
+                  setFormData({ ...formData, admin: !formData.admin })
+                }
+              ></Checkbox>
             </Form.Field>
             <Button type={"submit"}>Register</Button>
           </Form>
