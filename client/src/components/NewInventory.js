@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../context/user";
 import { useHistory } from "react-router-dom";
 import {
   Button,

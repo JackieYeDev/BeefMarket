@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 function Order() {
   const [orders, setOrders] = useState([]);
+  const [orderDetails, setOrderDetails] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   let history = useHistory();
 
@@ -18,6 +19,15 @@ function Order() {
       else history.push("/login");
     });
   }, []);
+
+  function handleGetOrderDetails(orderId) {
+    fetch(`/orders/${orderId}/order_details`, {
+      method: "GET",
+    }).then((res) => {
+      if (res.ok) res.json().then((response) => setOrderDetails(response));
+      else console.log(res);
+    });
+  }
   function convertDateToString(date) {
     const stringDate = new Date(date);
     const fullDate =
@@ -47,6 +57,7 @@ function Order() {
                     onClick={() => {
                       const newIndex = activeIndex === i ? -1 : i;
                       setActiveIndex(newIndex);
+                      handleGetOrderDetails(order.id);
                     }}
                   >
                     <Icon name="dropdown" />
@@ -54,7 +65,7 @@ function Order() {
                     {convertDateToString(order.created_at)}
                   </Accordion.Title>
                   <Accordion.Content active={activeIndex === i}>
-                    {order.order_details.map((detail, a) => (
+                    {orderDetails.map((detail, a) => (
                       <Item key={a}>
                         <Item.Header>{detail.product_name}</Item.Header>
                         <Item.Meta>Quantity: {detail.quantity}</Item.Meta>

@@ -3,6 +3,7 @@ class InventoriesController < ApplicationController
   before_action :authorize_admin, only: [:create]
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   def index
     inventories = Inventory.all
     render json: inventories
@@ -26,6 +27,9 @@ class InventoriesController < ApplicationController
 
   def render_unprocessable_entity_response(invalid)
     render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
+  end
+  def render_not_found
+    render json: {error: "Record not found"}, status: :not_found
   end
   def authorize
     return render json: {error:"Unauthorized. Please login first"}, status: :unauthorized unless session.include? :user_id

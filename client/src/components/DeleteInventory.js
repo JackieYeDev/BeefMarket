@@ -20,11 +20,10 @@ function DeleteInventory() {
     });
   }, []);
 
-  function deleteProduct(i) {
-    console.log(i.id);
-    fetch(`/inventories/${i.id}`, {
+  function deleteProduct(id) {
+    fetch(`/inventories/${id}`, {
       method: "DELETE",
-    }).then(() => setInventory(inventory.filter((item) => item.id !== i.id)));
+    }).then(() => setInventory(inventory.filter((item) => item.id !== id)));
   }
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
@@ -44,7 +43,7 @@ function DeleteInventory() {
                   <Button
                     type={"submit"}
                     color={"red"}
-                    onClick={() => deleteProduct(i)}
+                    onClick={() => deleteProduct(i.id)}
                   >
                     Delete
                   </Button>
