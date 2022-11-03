@@ -1,4 +1,5 @@
 class CartItemsController < ApplicationController
+  before_action :authorize
   def create
     inventory = Inventory.find(params[:inventory_id])
     # Check to see if it is in stock
@@ -27,8 +28,9 @@ class CartItemsController < ApplicationController
     cart_item.destroy
     head :no_content
   end
-  # private
-  # def cart_item_params
-  #   params.permit(:inventory_id, :cart_id)
-  # end
+
+  private
+  def authorize
+    return render json: {error:"Unauthorized. Please login first"}, status: :unauthorized unless session.include? :user_id
+  end
 end

@@ -1,11 +1,12 @@
 class InventoriesController < ApplicationController
+  before_action :authorize
   def index
-    user = User.find_by(id: session[:user_id])
-    if user
-      inventories = Inventory.all
-      render json: inventories
-    else
-      render json: { error: "Unauthorized" }, status: :unauthorized
-    end
+    inventories = Inventory.all
+    render json: inventories
+  end
+
+  private
+  def authorize
+    return render json: {error:"Unauthorized. Please login first"}, status: :unauthorized unless session.include? :user_id
   end
 end
