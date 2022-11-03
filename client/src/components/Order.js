@@ -14,14 +14,8 @@ function Order() {
         "Content-Type": "application/json",
       },
     }).then((r) => {
-      if (r.status === 401) {
-        history.push("/login");
-      } else {
-        r.json().then((response) => {
-          console.log(response);
-          setOrders([...response]);
-        });
-      }
+      if (r.ok) r.json().then((response) => setOrders([...response]));
+      else history.push("/login");
     });
   }, []);
   function convertDateToString(date) {

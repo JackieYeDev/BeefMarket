@@ -10,10 +10,12 @@ import {
 import CartItem from "./CartItem";
 import { CartContext } from "../context/cart";
 import { UserContext } from "../context/user";
+import { useHistory } from "react-router-dom";
 
 function Cart(props) {
   const [cartData, setCartData] = useContext(CartContext);
   const [message, setMessage] = useState("");
+  let history = useHistory();
   function onRemoveFromCart(objID) {
     fetch("/cart_items", {
       method: "DELETE",
@@ -49,6 +51,7 @@ function Cart(props) {
     });
   }
   useEffect(() => {
+    // Clears previous messages
     setMessage("");
   }, []);
   useEffect(() => {
@@ -57,11 +60,10 @@ function Cart(props) {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        setCartData({ ...response });
-      });
+    }).then((r) => {
+      if (r.ok) r.json().then((response) => setCartData({ ...response }));
+      else history.push("/login");
+    });
   }, []);
   function handleSubmit(e) {
     e.preventDefault();

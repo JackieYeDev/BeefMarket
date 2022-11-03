@@ -10,27 +10,23 @@ function Inventory(props) {
   const [user, setUser] = useContext(UserContext);
   let history = useHistory();
   useEffect(() => {
-    fetch("/cart", { method: "GET" })
-      .then((r) => r.json())
-      .then((response) => {
-        // Makes sure that when order was submitted, the new cart_id will be present in the user.
-        setUser({ ...user, cart: response });
-      });
+    fetch("/cart", { method: "GET" }).then((r) => {
+      if (r.ok)
+        r.json().then((response) => setUser({ ...user, cart: response }));
+      else history.push("/login");
+    });
     fetch("/inventories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((r) => r.json())
-      .then((response) => {
-        if (response.status === 500 || response.status === 401) {
-          history.push("/login");
-        } else {
-          // console.log(response);
-          setInventory(response);
-        }
-      });
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((response) => setInventory(response));
+      } else {
+        history.push("/login");
+      }
+    });
   }, []);
 
   function addToCart(data) {
