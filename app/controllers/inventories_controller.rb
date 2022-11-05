@@ -1,11 +1,17 @@
 class InventoriesController < ApplicationController
   before_action :authorize
   before_action :authorize_admin, only: [:create]
+  skip_before_action :authorize, only: [:filter]
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   def index
     inventories = Inventory.all
+    render json: inventories
+  end
+
+  def filter
+    inventories = Inventory.where("stock >= ?", params[:number])
     render json: inventories
   end
 

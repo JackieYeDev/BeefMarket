@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :authorize
   skip_before_action :authorize, only: [:create]
   def show
-    user = current_user
+    user = User.find(session[:user_id])
     render json: user, include: ['cart']
   end
   def create
@@ -23,10 +23,6 @@ class UsersController < ApplicationController
     params.permit(:username, :admin, :password, :password_confirmation)
   end
 
-  def current_user
-    user = User.find(session[:user_id])
-    user
-  end
   def authorize
     return render json: { error: "Unauthorized." }, status: :unauthorized unless session.include? :user_id
   end

@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Container, Grid, Segment } from "semantic-ui-react";
-import Cart from "./Cart";
-import Inventory from "./Inventory";
+import { Grid, Segment } from "semantic-ui-react";
 import { UserContext } from "../context/user";
 
 function Home(props) {
